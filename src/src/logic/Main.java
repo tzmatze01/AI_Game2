@@ -1,7 +1,8 @@
-package htw.main;
+package logic;
 
 import lenz.htw.kipifub.ColorChange;
 import lenz.htw.kipifub.net.NetworkClient;
+import model.GameboardGraph;
 
 /**
  * Created by matthiasdaiber on 21.06.17.
@@ -11,8 +12,28 @@ public class Main {
 
     public static void main(String args[])
     {
-        NetworkClient networkClient = new NetworkClient("ip-adresse", "Teamname");
+        NetworkClient networkClient = new NetworkClient("localhost", "Yoloswag");
         networkClient.getMyPlayerNumber(); // 0 = rot, 1 = grün, 2 = blau
+
+
+        int[] gameBoardPixels = new int[1024*1024];
+
+        for(int i = 0; i < 1024; i++)
+        {
+            for(int j = 0; j < 1024; j++)
+            {
+                int pos = (1024 * i) + j;
+                gameBoardPixels[pos] = networkClient.getBoard(i, j);
+            }
+        }
+
+        GameboardGraph graph = new GameboardGraph(8);
+        graph.calculateGraph(1024, gameBoardPixels);
+
+
+
+
+
 
         int rgb = networkClient.getBoard(0, 0); // 0-1023 ->
         int b = rgb & 255;
