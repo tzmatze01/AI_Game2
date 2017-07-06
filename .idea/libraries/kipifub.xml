@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="kipifub">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../AI/kipifub/kipifub.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

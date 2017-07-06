@@ -1,20 +1,27 @@
-package logic;
+package model;
 
 import lenz.htw.kipifub.ColorChange;
 import lenz.htw.kipifub.net.NetworkClient;
-import model.GameboardGraph;
 
-/**
- * Created by matthiasdaiber on 21.06.17.
- */
-public class Main {
+import java.util.Observable;
+
+public class Player extends Observable implements Runnable {
 
 
-    public static void main(String args[])
-    {
-        NetworkClient networkClient = new NetworkClient("localhost", "Yoloswag");
+    private boolean end = false;
+
+    private String hostName;
+    private String playerName;
+
+    public Player(String hostName, String playerName) {
+        this.hostName = hostName;
+        this.playerName = playerName;
+    }
+
+    public void run() {
+
+        NetworkClient networkClient = new NetworkClient(hostName, playerName);
         networkClient.getMyPlayerNumber(); // 0 = rot, 1 = grün, 2 = blau
-
 
         int[] gameBoardPixels = new int[1024*1024];
 
@@ -29,9 +36,6 @@ public class Main {
 
         GameboardGraph graph = new GameboardGraph(8);
         graph.calculateGraph(1024, gameBoardPixels);
-
-
-
 
 
 
@@ -54,5 +58,8 @@ public class Main {
             //verarbeiten von colorChange
             //colorChange.player, colorChange.bot, colorChange.x, colorChange.y;
         }
+
+        setChanged();
+        notifyObservers();
     }
 }
