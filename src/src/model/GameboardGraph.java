@@ -11,6 +11,10 @@ public class GameboardGraph {
     private int pixelBlocksPerSide;
     private List<List<Integer>> pixelBlocks;
 
+    // Idee: Darstellung des Rasters als Graph: Knoten und Kanten
+    private List<RasterNode> nodes;
+    private List<RasterEdge> edges;
+
     // Idee Map: bool, Int
     // bool gbt an ob feld betretbar ist, false wenn mauer
 
@@ -99,55 +103,36 @@ public class GameboardGraph {
         }
     }
 
-    /*
-      int numberOfBlocks = pixelBlocksPerSide*pixelBlocksPerSide;
-        int pixelsPerBlockHeight = height / pixelBlocksPerSide;
-        int pixelsPerBlockWidth = width / pixelBlocksPerSide;
+    public List<RasterNode> getRasterNodes() {
+        return null;
+    }
 
-        this.vectors = new ArrayList<>();
+    public List<RasterEdge> getRasterEdges() {
+        return null;
+    }
 
-        // create and populate list with empty 'pixelblocks'
-        List<List<Integer>> pixelBlocks = new ArrayList<>();
-        for(int i = 0; i < numberOfBlocks; ++i)
-            pixelBlocks.add(new ArrayList<>());
+    public int[] getHeatMap() {
+        return null;
+    }
 
-        // populate the pixelblocks with the corresponding pixels
-        int pbHeight = 0;
-        int pbWidth = 0;
+    public int getMeanColorOfBlock(RasterNode rInfo) {
+        return 0;
+    }
 
-        int pixelsHeight = pixelsPerBlockHeight;
-        int pixelsWidth = pixelsPerBlockWidth;
+    public RasterNode findHotPOI(int bot) {
+        return null;
+    }
 
-        for(int y = 0; y < height; y++) {
+    public RasterNode findColdPOI(int bot) {
+        return null;
+    }
 
-            if(y == pixelsHeight) {
-                pixelsHeight += pixelsPerBlockHeight;
-                ++pbHeight;
+    public RasterNode findNextPOI(int bot) {
+        return null;
+    }
 
-                // break because of float - int conversion
-                if(pbHeight == pixelBlocksPerSide)
-                    break;
-            }
-
-            for(int x = 0; x < width; x++) {
-
-                if(x == pixelsWidth) {
-                    pixelsWidth += pixelsPerBlockWidth;
-                    ++pbWidth;
-
-                    // break because of float - int conversion
-                    if(pbWidth == pixelBlocksPerSide)
-                        break;
-                }
-
-                // store current pixel in corresponding ArrayList (which is representing a pixelblock)
-                int posPixels = y * width + x;
-                int posPB = pbHeight * pixelBlocksPerSide + pbWidth;
-
-                pixelBlocks.get(posPB).add(rgbValues[posPixels]);
-            }
-            pbWidth = 0;
-            pixelsWidth = pixelsPerBlockWidth;
-        }
-     */
+    public int getRasterOfBot(int bot) {
+        // return (index) raster of given bot
+        return 0;
+    }
 }
