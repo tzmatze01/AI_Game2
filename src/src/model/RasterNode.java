@@ -10,10 +10,11 @@ public class RasterNode {
     private int meanColor;
     private int numberOfBotsInRaster;
 
-    public RasterNode(int id, int middleX, int middleY) {
+    public RasterNode(int id, int middleX, int middleY, int color) {
         this.id = id;
         this.middleX = middleX;
         this.middleY = middleY;
+        this.meanColor = color;
     }
 
     public int getId() {
