@@ -23,6 +23,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="2" lean-forward="false" selection-start-line="1" selection-start-column="2" selection-end-line="1" selection-end-column="2" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="FloydWarshall.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/src/logic/FloydWarshall.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -38,16 +48,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="105">
               <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BellmanFord.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/src/logic/BellmanFord.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -95,7 +95,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameboardGraph.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GameboardGraph.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/src/model/GameboardGraph.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="394">
@@ -148,11 +148,11 @@
         <option value="$PROJECT_DIR$/src/src/logic/Pathfinder.java" />
         <option value="$PROJECT_DIR$/src/src/logic/Main.java" />
         <option value="$PROJECT_DIR$/src/src/Main.java" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/src/model/Colors.java" />
         <option value="$PROJECT_DIR$/src/src/model/RasterNode.java" />
         <option value="$PROJECT_DIR$/src/src/model/Player.java" />
         <option value="$PROJECT_DIR$/src/src/model/GameboardGraph.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -538,12 +538,12 @@
       <workItem from="1499951774023" duration="686000" />
       <workItem from="1499954739828" duration="8268000" />
       <workItem from="1500027833364" duration="27000" />
-      <workItem from="1500155175118" duration="14536000" />
+      <workItem from="1500155175118" duration="14764000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29289000" />
+    <option name="totallyTimeSpent" value="29517000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
@@ -597,14 +597,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="22" lean-forward="false" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/src/logic/BellmanFord.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -696,6 +688,14 @@
             <element signature="e#8872#8873#0" expanded="true" />
             <element signature="e#8929#8930#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="2" lean-forward="false" selection-start-line="1" selection-start-column="2" selection-end-line="1" selection-end-column="2" />
+          <folding />
         </state>
       </provider>
     </entry>
