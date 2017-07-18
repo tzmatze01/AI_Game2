@@ -34,31 +34,47 @@ public class Player extends Observable implements Runnable {
             }
         }
 
-        GameboardGraph graph = new GameboardGraph(8);
-        graph.calculateGraph(1024, gameBoardPixels);
+        GameboardGraph graph = new GameboardGraph(1024, 8, networkClient.getMyPlayerNumber());
+        graph.calculateGraph(gameBoardPixels);
 
 
+        //networkClient.getInfluenceRadiusForBot(0); // -> 40
 
-        int rgb = networkClient.getBoard(0, 0); // 0-1023 ->
-        int b = rgb & 255;
-        int g = (rgb >> 8) & 255;
-        int r = (rgb >> 16) & 255;
+        //networkClient.getScore(0); // Punkte von rot
 
-        networkClient.getInfluenceRadiusForBot(0); // -> 40
+        ///networkClient.isWalkable(0, 0); // begehbar oder Hinderniss?
 
-        networkClient.getScore(0); // Punkte von rot
-
-        networkClient.isWalkable(0, 0); // begehbar oder Hinderniss?
 
         networkClient.setMoveDirection(0, 1, 0); // bot 0 nach rechts
         networkClient.setMoveDirection(1, 0.23f, -0.52f); // bot 1 nach rechts unten
+        networkClient.setMoveDirection(2, 0.23f, -0.52f); // bot 1 nach rechts unten
 
-        ColorChange colorChange;
-        while ((colorChange = networkClient.pullNextColorChange()) != null) {
-            //verarbeiten von colorChange
-            //colorChange.player, colorChange.bot, colorChange.x, colorChange.y;
+
+
+        System.out.println("set move direction!");
+
+
+        while(networkClient.isAlive()) {
+
+            //System.out.println("is alive!");
+
+            ColorChange colorChange;
+            while ((colorChange = networkClient.pullNextColorChange()) != null) {
+
+                graph.processColorChanges(colorChange);
+
+                System.out.println("player: " + networkClient.getMyPlayerNumber() + "colorchange " + colorChange.toString());
+
+
+                networkClient.setMoveDirection(0, 1, 0); // bot 0 nach rechts
+                networkClient.setMoveDirection(1, 0.23f, -0.52f); // bot 1 nach rechts unten
+                networkClient.setMoveDirection(2, 0.23f, -0.52f); // bot 1 nach rechts unten
+
+
+                //verarbeiten von colorChange
+                //colorChange.player, colorChange.bot, colorChange.x, colorChange.y;
+            }
         }
-
         setChanged();
         notifyObservers();
     }

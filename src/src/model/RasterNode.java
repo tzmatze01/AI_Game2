@@ -4,16 +4,20 @@ package model;
  * Created by fschwank on 11.07.17.
  */
 public class RasterNode {
+
     private final int id;
     private int middleX;
     private int middleY;
     private int meanColor;
     private int numberOfBotsInRaster;
 
-    public RasterNode(int id, int middleX, int middleY) {
+
+    public RasterNode(int id, int middleX, int middleY, int meanColor)
+    {
         this.id = id;
         this.middleX = middleX;
         this.middleY = middleY;
+        this.meanColor = meanColor;
     }
 
     public int getId() {

@@ -6,12 +6,11 @@ package model;
 public class RasterEdge {
     private final RasterNode source;
     private final RasterNode dest;
-    private final int distance;
+    private int weight;
 
-    public RasterEdge(RasterNode source, RasterNode destination, int distance) {
+    public RasterEdge(RasterNode source, RasterNode destination) {
         this.source = source;
         this.dest = destination;
-        this.distance = distance;
     }
 
     public RasterNode getSource() {
@@ -22,7 +21,11 @@ public class RasterEdge {
         return this.dest;
     }
 
-    public int getDistance() {
-        return this.distance;
+    public int getWeight() {
+        return this.weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 }
