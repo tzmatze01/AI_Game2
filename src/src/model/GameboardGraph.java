@@ -63,7 +63,7 @@ public class GameboardGraph {
             pixelBlocks.add(new ArrayList<>());
         }
 
-        System.out.println("pixelsblocks: "+pixelBlocksPerSide*pixelBlocksPerSide);
+        System.out.println("pixelsblocksperside * pixelsblocksperside: "+pixelBlocksPerSide*pixelBlocksPerSide);
 
         // count how many black and white pixel a bin has
         Map<Integer, int[]> countBW = new HashMap<>();
