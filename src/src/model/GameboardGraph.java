@@ -5,6 +5,7 @@ import lenz.htw.kipifub.ColorChange;
 
 import java.util.*;
 import model.Colors;
+import java.util.*;
 
 /**
  * Created by matthiasdaiber on 21.06.17.

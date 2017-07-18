@@ -1,10 +1,9 @@
 package model;
 
 /**
- * Created by matthiasdaiber on 17.07.17.
+ * Created by matthiasdaiber on 16.07.17.
  */
 public enum Colors {
-
     NONE(0),
     RED(1),
     GREEN(2),
@@ -12,15 +11,14 @@ public enum Colors {
     BLACK(4),
     WHITE(5);
 
-    private int value;
-
     private Colors(int value)
     {
         this.value = value;
     }
 
-    public int getValue()
-    {
+    private int value;
+
+    public int getValue() {
         return this.value;
     }
 }
