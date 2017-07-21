@@ -3,8 +3,7 @@ package model;
 import lenz.htw.kipifub.ColorChange;
 
 
-import java.util.*;
-import model.Colors;
+import java.awt.image.Raster;
 import java.util.*;
 
 /**
@@ -19,7 +18,7 @@ public class GameboardGraph {
     private Map<Integer, List<RasterNode>> hotPOIsForBots;
 
     // maps the x-y-Position to {numberOfBlock, Color}
-    private Map<Integer, Integer> colorOfBlockPosition;
+    private Map<Integer, Integer> xyOfBlocks;
     private Map<Integer, Integer> playersBotsPositions;
     private Map<Integer, RasterNode> colorBlocks;
 
@@ -36,7 +35,7 @@ public class GameboardGraph {
         //this.pixelBlocks = new ArrayList<>();
         this.hotPOIsForBots = new HashMap<>();
         // creating 'abstraction' where every x-y-Position has its corresponding bin and Color
-        this.colorOfBlockPosition = new HashMap<>();
+        this.xyOfBlocks = new HashMap<>();
         this.playersBotsPositions = new HashMap<>();
         this.colorBlocks = new HashMap<>();
 
@@ -117,7 +116,7 @@ public class GameboardGraph {
                     countBW.put(posPB, new int[]{++oldVal[0], oldVal[1]});
                 }
 
-                colorOfBlockPosition.put((x * 10000) + y, posPB);
+                xyOfBlocks.put((x * 10000) + y, posPB);
                 pixelBlocks.get(posPB).add(gbPixels[posPixels]);
             }
             pbWidth = 0;
@@ -150,20 +149,13 @@ public class GameboardGraph {
         }
     }
 
-
     public List<RasterNode> getRasterNodes() {
-        return null;
+        List<RasterNode> nodes =  new ArrayList<>();
+        nodes.addAll(colorBlocks.values());
+        return nodes;
     }
 
-    public List<RasterEdge> getRasterEdges() {
-        return null;
-    }
-
-    public int[] getHeatMap() {
-        return null;
-    }
-
-    // TODO parameters are the block numbers or pixelPositions ?
+    // parameters are the bin numbers
     private List<RasterNode> getBlocksOfRaster(int fromWidth, int toWidth, int fromHeight, int toHeight) {
         List<RasterNode> tmpAllBlocks = new ArrayList<>();
 
@@ -178,6 +170,43 @@ public class GameboardGraph {
         }
 
         return tmpAllBlocks;
+    }
+
+    private List<RasterNode> getNeighborBlocks(int bin)
+    {
+        int[] positions = new int[]{bin+1, bin-1, bin+pixelBlocksPerSide, bin-pixelBlocksPerSide};
+        List<RasterNode> neighborBins = new ArrayList<>();
+
+        for(int position : positions)
+        {
+            if(isValidNeighborBin(bin, position))
+            {
+                neighborBins.add(colorBlocks.get(position));
+            }
+        }
+
+        return neighborBins;
+    }
+
+    private boolean isValidNeighborBin(int sourceBin, int destinationBin)
+    {
+        if(destinationBin < 0)
+            return false;
+        if(destinationBin >= (pixelBlocksPerSide*pixelBlocksPerSide))
+            return false;
+
+        // source bin is on the left side -> no destinationbin to the left side
+        if(sourceBin % pixelBlocksPerSide == 0 && destinationBin == (sourceBin-1))
+            return false;
+        // source bin is on the right side -> no destinationbin to the left side
+        if((sourceBin+1) % pixelBlocksPerSide == 0 && (destinationBin-1) == sourceBin)
+            return false;
+
+        // check if bin is a obstacle
+        if(colorBlocks.get(destinationBin).getMeanColor() == Colors.BLACK.getValue())
+            return false;
+
+        return true;
     }
 
     private int getMeanColorOfBlock(List<Integer> block) {
@@ -213,9 +242,9 @@ public class GameboardGraph {
         return (0xFF << 24) | (accRed << 16) | (accGreen << 8) | accBlue;
     }
 
-    public RasterNode findHotPOI(int bot) {
+    public List<RasterNode> findHotPOIs(int bot) {
 
-        // TODO radius of Bot is not used atm
+        int radius = getRasterOfBot(bot);
 
         // clear corresponding list of hotPOIsForBot
         hotPOIsForBots.get(bot).clear();
@@ -223,43 +252,107 @@ public class GameboardGraph {
         List<RasterNode> tmpWhiteBlocks = new ArrayList<>();
         //List<RasterNode> tmpOwnBlocks = new ArrayList<>();
 
-        int raster = getRasterOfBot(bot);
+        // iterate over gameboard
+        // startposition changes according to raster of Bot
+        for(int height = radius; height < pixelBlocksPerSide; height++) {
 
 
-        for(RasterNode rn : colorBlocks.values())
-        {
-            // is an enemy color
-            if(rn.getMeanColor() != getColorOfPlayer(playerNumber) && rn.getMeanColor() != Colors.WHITE.getValue() && rn.getMeanColor() != Colors.BLACK.getValue())
-            {
-                tmpEnemyBlocks.add(rn);
-                continue;
-            }
-            if(rn.getMeanColor() == Colors.WHITE.getValue())
-            {
-                tmpWhiteBlocks.add(rn);
-                continue;
+            for(int width = radius; width < pixelBlocksPerSide; width++) {
+
+                int binPosition = height * pixelBlocksPerSide + width;
+
+                List<RasterNode> nodesInRaster = getBlocksOfRaster(width-radius, width, height-(pixelBlocksPerSide*radius), height);
+                int color = getMeanColorOfRaster(nodesInRaster);
+
+                // is an enemy color
+                if(color != getColorOfPlayer(playerNumber) && color != Colors.WHITE.getValue() && color != Colors.BLACK.getValue())
+                {
+                    tmpEnemyBlocks.add(extractInfoFromRaster(nodesInRaster, color, radius));
+                    continue;
+                }
+                if(color == Colors.WHITE.getValue())
+                {
+                    tmpWhiteBlocks.add(extractInfoFromRaster(nodesInRaster, color, radius));
+                    continue;
+                }
             }
         }
 
-        // TODO sort after distance to bot ?
-        // TODO sort ascending to 'hotness' of raster
+        // sorts after bots in raster
+        Collections.sort(tmpEnemyBlocks);
 
         // add white fields after enemy fields, because they have a lower interest
         tmpEnemyBlocks.addAll(tmpWhiteBlocks);
         hotPOIsForBots.put(bot, tmpEnemyBlocks);
 
-        return this.hotPOIsForBots.get(bot).remove(0);
+        return this.hotPOIsForBots.get(bot);
     }
 
-    public RasterNode findNextHotPOI(int bot) {
+    private RasterNode extractInfoFromRaster(List<RasterNode> nodes, int color, int botRadius)
+    {
+        // find center of all nodes and extract corresponding bin
+        RasterNode firstNode = nodes.get(0);
+
+                            // pixels per block
+        int rasterSideLength = (gbPixelsPerSide / pixelBlocksPerSide) * botRadius;
+
+        int middleX = (firstNode.getMiddleX() + rasterSideLength) / 2;
+        int middleY = (firstNode.getMiddleY() + rasterSideLength) / 2;
+
+        int bin = xyOfBlocks.get((middleX * 10000) + middleY);
+
+        // get bots of raster and save
+        // TODO save only the bots in the bin, not the raster
+        int numberOfBots = 0;
+        for(RasterNode node : nodes)
+        {
+            // TODO what if there are multiple bots in one bin -> pretty unlikely?
+            if(playersBotsPositions.containsValue(node.getId()))
+                numberOfBots++;
+        }
+
+        RasterNode node = colorBlocks.get(bin);
+        node.setNumberOfBotsInRaster(numberOfBots);
+        node.setMeanColor(color);
+
+        return node;
+    }
+
+    private int getMeanColorOfRaster(List<RasterNode> bins)
+    {
+        // has length of all colors
+        int[] colorOccurences = new int[]{0, 0, 0, 0, 0};
+
+        for(RasterNode bin : bins)
+        {
+            ++colorOccurences[bin.getId()];
+        }
+
+        int max = 0;
+        int color = 0;
+
+        for(int index = 0; index < colorOccurences.length; ++index)
+        {
+            if(colorOccurences[index] > max)
+            {
+                max = colorOccurences[index];
+                color = index;
+            }
+        }
+
+        return color;
+    }
+    public RasterNode findHotPOI(int bot) {
         return hotPOIsForBots.get(bot).remove(0);
     }
 
     public RasterNode findColdPOI(int bot) {
-        return null;
+        return hotPOIsForBots.get(bot).remove(hotPOIsForBots.size()-1);
     }
 
     private int getRasterOfBot(int bot) {
+
+        // TODO change numbers due testing
         // return (index) raster of given bot
         return  (bot == 0) ? 3 :
                 (bot == 1) ? 2 : 1;
@@ -268,7 +361,7 @@ public class GameboardGraph {
     // gets postion as = (x * 10000) + y
     public int getBinAtPostion(int position)
     {
-        return colorOfBlockPosition.get(position);
+        return xyOfBlocks.get(position);
     }
 
     // liefert bin + botnummer
@@ -289,11 +382,12 @@ public class GameboardGraph {
 
     public void processColorChanges(ColorChange colorChange)
     {
+        int colorBlock = xyOfBlocks.get((colorChange.x * 10000) + colorChange.y);
+
         // update position of players bot
-        playersBotsPositions.put((colorChange.player*10)+colorChange.bot, (colorChange.x * 10000) + colorChange.y);
+        playersBotsPositions.put((colorChange.player*10)+colorChange.bot, colorBlock);
 
         // update color of corresponding bin
-        int colorBlock = colorOfBlockPosition.get((colorChange.x * 10000) + colorChange.y);
         RasterNode oldRN = colorBlocks.get(colorBlock);
 
         if(oldRN.getMeanColor() != Colors.BLACK.getValue())
@@ -317,5 +411,7 @@ public class GameboardGraph {
                 return Colors.NONE.getValue();
         }
     }
+
+    // umliegende felder von bot -> hot poi, selbe cold poi als raster
 
 }

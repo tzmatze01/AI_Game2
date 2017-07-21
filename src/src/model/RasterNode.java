@@ -1,12 +1,13 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by fschwank on 11.07.17.
  */
-public class RasterNode {
+public class RasterNode implements Comparable {
 
     private final int id;
     private int middleX;
@@ -65,4 +66,18 @@ public class RasterNode {
         this.wayPoints = wayPoints;
     }
 
+
+    @Override
+    public int compareTo(Object o) {
+
+        int botsOfNode = ((RasterNode)o).getNumberOfBotsInRaster();
+
+
+        if(numberOfBotsInRaster > botsOfNode)
+            return 1;
+        if(numberOfBotsInRaster < botsOfNode)
+            return -1;
+
+        return 0;
+    }
 }
