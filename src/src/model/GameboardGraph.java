@@ -22,10 +22,6 @@ public class GameboardGraph {
     private Map<Integer, Integer> playersBotsPositions;
     private Map<Integer, RasterNode> colorBlocks;
 
-    // Idee: Darstellung des Rasters als Graph: Knoten und Kanten
-    private List<RasterNode> nodes;
-    private List<RasterEdge> edges;
-
     public GameboardGraph(int gbPixelsPerSide, int pixelsPerBlock, int playerNumber)
     {
         this.gbPixelsPerSide = gbPixelsPerSide;
@@ -250,12 +246,10 @@ public class GameboardGraph {
         hotPOIsForBots.get(bot).clear();
         List<RasterNode> tmpEnemyBlocks = new ArrayList<>();
         List<RasterNode> tmpWhiteBlocks = new ArrayList<>();
-        //List<RasterNode> tmpOwnBlocks = new ArrayList<>();
 
         // iterate over gameboard
         // startposition changes according to raster of Bot
         for(int height = radius; height < pixelBlocksPerSide; height++) {
-
 
             for(int width = radius; width < pixelBlocksPerSide; width++) {
 
@@ -348,6 +342,13 @@ public class GameboardGraph {
 
     public RasterNode findColdPOI(int bot) {
         return hotPOIsForBots.get(bot).remove(hotPOIsForBots.size()-1);
+    }
+
+    public RasterNode getCurrentRasterNodeOfBot(int bot) {
+        int rasterID = getRasterOfBot(bot);
+        RasterNode botNode = colorBlocks.get(rasterID);
+
+        return botNode;
     }
 
     private int getRasterOfBot(int bot) {
