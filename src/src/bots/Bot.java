@@ -3,9 +3,9 @@ package bots;
 /**
  * Created by fschwank on 11.07.17.
  */
-public class Bot {
-    int id;
+public class Bot implements Runnable {
 
+    int id;
     double speed;
     int radius;
     int intensity;
@@ -24,5 +24,9 @@ public class Bot {
 
     public int getIntensity() {
         return this.intensity;
+    }
+
+    public void run() {
+
     }
 }

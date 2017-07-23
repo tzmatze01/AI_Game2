@@ -18,11 +18,9 @@ public class Dijkstra {
     private Map<RasterNode, RasterNode> predecessors;
     private Map<RasterNode, Integer> distance;
 
-    private Map<RasterNode, RasterNode> predecessors;
-
     public Dijkstra(GameboardGraph graph) {
         this.nodes = graph.getRasterNodes();
-        this.edges = graph.getRasterEdges();
+        //this.edges = graph.getRasterEdges();
     }
 
     public LinkedList<RasterNode> getPathToTarget(RasterNode target) {

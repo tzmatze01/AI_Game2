@@ -43,11 +43,7 @@ public class Player extends Observable implements Runnable {
         graph = new GameboardGraph(1024, 8, networkClient.getMyPlayerNumber());
         graph.calculateGraph(gameBoardPixels);
 
-        System.out.println("set move direction!");
-
         while(networkClient.isAlive()) {
-
-            //System.out.println("is alive!");
 
             Strategy gameStrategy = new AggressiveStrategy();
 
@@ -66,7 +62,6 @@ public class Player extends Observable implements Runnable {
                         List<RasterNode> path = pathAlgorithm.findPath(botPosition, nextTarget);
                     }
                 }
-
             }
         }
         setChanged();
@@ -81,6 +76,6 @@ public class Player extends Observable implements Runnable {
     }
 
     private void moveBot(int bot, List<RasterNode> path) {
-        
+
     }
 }
