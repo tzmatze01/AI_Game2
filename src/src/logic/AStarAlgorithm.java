@@ -43,7 +43,9 @@ public class AStarAlgorithm implements Pathfinder {
             for (RasterNode neighbor : neighborNodes) {
                 if (!openList.contains(neighbor)) {
                     neighbor.setPreviousNode(currentNode);
-                    neighbor.sethCosts(targetNode);
+
+                    int calculatedCost = gameStrategy.calculateCostOfField(targetNode);
+                    neighbor.sethCosts(targetNode, calculatedCost);
                     neighbor.setgCosts(targetNode);
                     openList.add(neighbor);
                 }

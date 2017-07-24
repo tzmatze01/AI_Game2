@@ -111,19 +111,11 @@ public class RasterNode implements Comparable {
     }
 
     public int calculateGCosts() {
-        return 0;
+        return this.previousNode.getgCosts() + Strategy.BASIC_MOVEMENT_COST;
     }
 
     public int calculateGCosts(RasterNode previousNode) {
-        return 0;
-    }
-
-    public int calculateHCosts() {
-        return 0;
-    }
-
-    public int calculateHCosts(RasterNode previousNode) {
-        return 0;
+        return previousNode.getgCosts() + Strategy.BASIC_MOVEMENT_COST;
     }
 
     @Override
